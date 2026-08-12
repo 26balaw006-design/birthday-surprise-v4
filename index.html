@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,856 +9,1056 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;600;700&display=swap');
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
 
 body{
-margin:0;
-background:#12070c;
-color:#fff7f9;
-font-family:Montserrat,sans-serif
+  background:#12070c;
+  color:#fff7f9;
+  font-family:Montserrat,sans-serif;
 }
 
-section{
-min-height:100vh;
-padding:70px 20px;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center
+button,
+input,
+textarea{
+  font-family:inherit;
 }
 
-.wrap{max-width:760px;width:100%}
+/* =========================
+   SLIDES
+========================= */
+
+.slide{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100vh;
+  min-height:100vh;
+  padding:70px 20px 100px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  overflow-y:auto;
+}
+
+.slide.active{
+  display:flex;
+}
+
+.wrap{
+  max-width:760px;
+  width:100%;
+  margin:auto;
+}
 
 .ey{
-letter-spacing:6px;
-font-size:11px;
-color:#cdb6bd;
-margin:20px 0 30px
+  letter-spacing:6px;
+  font-size:11px;
+  color:#cdb6bd;
+  margin:20px 0 30px;
 }
 
-h1,h2,h3{font-family:"Cormorant Garamond",serif}
+h1,h2,h3{
+  font-family:"Cormorant Garamond",serif;
+}
 
 h1{
-font-size:clamp(52px,12vw,100px);
-line-height:.85;
-margin:0
+  font-size:clamp(52px,12vw,100px);
+  line-height:.85;
+  margin:0;
 }
 
 h2{
-font-size:clamp(42px,9vw,70px);
-line-height:.9
+  font-size:clamp(42px,9vw,70px);
+  line-height:.9;
+  margin:20px 0;
 }
 
 p{
-color:#cdbdc2;
-line-height:1.8
+  color:#cdbdc2;
+  line-height:1.8;
 }
 
-.heart{font-size:55px}
-
-.pink{color:#df5876}
-
-input,textarea{
-background:#080609;
-color:#fff;
-border:1px solid #39272e;
-border-radius:14px;
-padding:15px;
-width:100%;
-outline:0;
-font-family:inherit
+.heart{
+  font-size:55px;
 }
 
-textarea{min-height:110px}
+.pink{
+  color:#df5876;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+textarea{
+  background:#080609;
+  color:#fff;
+  border:1px solid #39272e;
+  border-radius:14px;
+  padding:15px;
+  width:100%;
+  outline:0;
+}
+
+textarea{
+  min-height:110px;
+  resize:vertical;
+}
+
+input:focus,
+textarea:focus{
+  border-color:#df5876;
+}
+
+/* =========================
+   BUTTONS
+========================= */
 
 .btn{
-background:#df5876;
-color:#fff;
-border:0;
-border-radius:30px;
-padding:16px 28px;
-font-weight:700;
-margin-top:14px
+  background:#df5876;
+  color:#fff;
+  border:0;
+  border-radius:30px;
+  padding:16px 28px;
+  font-weight:700;
+  margin-top:14px;
+  cursor:pointer;
+  transition:.2s;
 }
 
+.btn:hover{
+  transform:scale(1.03);
+}
+
+.btn:active{
+  transform:scale(.98);
+}
+
+.nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:20px;
+  z-index:20;
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  pointer-events:none;
+}
+
+.nav button{
+  pointer-events:auto;
+  background:#df5876;
+  color:#fff;
+  border:0;
+  border-radius:28px;
+  padding:13px 22px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.nav button.secondary{
+  background:#35242a;
+  border:1px solid #ffffff22;
+}
+
+.nav .hidden{
+  display:none;
+}
+
+/* =========================
+   TOP EDIT BUTTON
+========================= */
+
 .top{
-position:fixed;
-right:12px;
-top:12px;
-z-index:10
+  position:fixed;
+  right:12px;
+  top:12px;
+  z-index:50;
 }
 
 .top button{
-background:#35242a;
-color:#fff;
-border:1px solid #ffffff22;
-border-radius:22px;
-padding:10px 15px
+  background:#35242a;
+  color:#fff;
+  border:1px solid #ffffff22;
+  border-radius:22px;
+  padding:10px 15px;
+  cursor:pointer;
 }
+
+/* =========================
+   CARDS
+========================= */
 
 .cards{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:15px
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
 }
 
-.card,.moment,.editbox{
-background:#1c1217;
-border:1px solid #38272e;
-border-radius:18px;
-padding:18px
+.card,
+.moment,
+.editbox{
+  background:#1c1217;
+  border:1px solid #38272e;
+  border-radius:18px;
+  padding:18px;
 }
 
 .moments{
-display:grid;
-gap:12px;
-text-align:left
+  display:grid;
+  gap:12px;
+  text-align:left;
 }
 
 .moment b{
-font-family:"Cormorant Garamond";
-font-size:26px
+  font-family:"Cormorant Garamond";
+  font-size:26px;
 }
 
 .moment span{
-display:block;
-color:#cdbdc2;
-margin-top:6px;
-line-height:1.7;
-font-size:14px
+  display:block;
+  color:#cdbdc2;
+  margin-top:6px;
+  line-height:1.7;
+  font-size:14px;
 }
 
 .photo{
-aspect-ratio:4/5;
-background:#0a080a;
-border-radius:12px;
-overflow:hidden;
-display:flex;
-align-items:center;
-justify-content:center;
-color:#88757c;
-font-size:12px
+  aspect-ratio:4/5;
+  background:#0a080a;
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#88757c;
+  font-size:12px;
 }
 
 .photo img{
-width:100%;
-height:100%;
-object-fit:cover
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-#suspense,#main,#editor{display:none}
+/* =========================
+   SURPRISE BOXES
+========================= */
+
+.surpriseBox{
+  cursor:pointer;
+  min-height:160px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.surpriseIcon{
+  font-size:48px;
+  margin-bottom:10px;
+}
+
+.surpriseText{
+  display:none;
+  color:#cdbdc2;
+  line-height:1.7;
+}
+
+.surpriseBox.open .surpriseText{
+  display:block;
+}
+
+.surpriseBox.open .surpriseIcon{
+  transform:scale(1.1);
+}
+
+/* =========================
+   EDITOR
+========================= */
 
 #editor{
-min-height:100vh;
-padding:70px 16px
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  background:#12070c;
+  overflow-y:auto;
+  padding:70px 16px 40px;
+}
+
+#editor.show{
+  display:block;
+}
+
+.editorInner{
+  max-width:760px;
+  margin:auto;
 }
 
 .editbox{
-max-width:760px;
-margin:0 auto 15px
+  max-width:760px;
+  margin:0 auto 15px;
 }
 
 .editbox h3{
-font-size:28px;
-margin:5px 0 15px
+  font-size:28px;
+  margin:5px 0 15px;
 }
 
 label{
-display:block;
-font-size:10px;
-letter-spacing:2px;
-color:#cdb6bd;
-margin:14px 0 7px
+  display:block;
+  font-size:10px;
+  letter-spacing:2px;
+  color:#cdb6bd;
+  margin:14px 0 7px;
 }
 
 .save{
-width:100%;
-background:#df5876;
-color:white;
-border:0;
-border-radius:28px;
-padding:16px;
-font-weight:700
+  width:100%;
+  background:#df5876;
+  color:white;
+  border:0;
+  border-radius:28px;
+  padding:16px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:8px;
 }
 
+.closeEdit{
+  width:100%;
+  background:#35242a;
+  color:#fff;
+  border:1px solid #ffffff22;
+  border-radius:28px;
+  padding:16px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.editorItem{
+  margin-bottom:18px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:650px){
-.cards{grid-template-columns:1fr}
+
+  .slide{
+    padding:60px 18px 105px;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  h1{
+    font-size:clamp(48px,14vw,75px);
+  }
+
+  h2{
+    font-size:clamp(40px,11vw,60px);
+  }
+
+  .nav button{
+    padding:12px 18px;
+  }
+
 }
 </style>
 </head>
 
 <body>
 
+<!-- =========================
+     EDIT BUTTON
+========================= -->
+
 <div class="top">
-<button onclick="editSite()">✏️ Edit</button>
+  <button onclick="editSite()">✏️ Edit</button>
 </div>
 
-<section id="intro">
-<div class="wrap">
 
-<div class="heart">♥</div>
+<!-- =========================
+     SLIDE 1
+========================= -->
 
-<div class="ey">A LITTLE SECRET</div>
+<section class="slide active" id="slide0">
 
-<h1>
-Someone has<br>
-prepared<br>
-something for<br>
-you.
-</h1>
+  <div class="wrap">
 
-<p>Enter your name:</p>
+    <div class="heart">♥</div>
 
-<input id="nameInput" placeholder="Your name">
+    <div class="ey">
+      A LITTLE SECRET
+    </div>
 
-<br>
+    <h1>
+      Someone has<br>
+      prepared<br>
+      something for<br>
+      you.
+    </h1>
 
-<button class="btn" onclick="unlock()">UNLOCK 🔓</button>
+    <p>Enter your name:</p>
 
-<p id="error"></p>
+    <input
+      id="nameInput"
+      placeholder="Your name"
+      autocomplete="off"
+    >
 
-</div>
-</section>
+    <br>
 
+    <button class="btn" onclick="unlock()">
+      UNLOCK 🔓
+    </button>
 
-<section id="suspense">
+    <p id="error"></p>
 
-<div class="wrap">
-
-<div class="ey">WAIT...</div>
-
-<h2>Something seems to<br>be missing...</h2>
-
-<div style="font-size:34px;margin:35px">Oh.</div>
-
-<h2 class="pink">It's your birthday. 😭❤️</h2>
-
-<button class="btn" onclick="showMain()">Continue ❤️</button>
-
-</div>
+  </div>
 
 </section>
 
 
-<div id="main">
+<!-- =========================
+     SLIDE 2
+========================= -->
 
-<section>
-<div class="wrap">
+<section class="slide" id="slide1">
 
-<div class="ey">TODAY IS YOURS</div>
+  <div class="wrap">
 
-<h2>
-Happy Birthday,<br>
-<span class="pink" id="who"></span> 🎂
-</h2>
+    <div class="ey">
+      WAIT...
+    </div>
 
-<p id="birthdayMessage"></p>
+    <h2>
+      Something seems to<br>
+      be missing...
+    </h2>
 
-</div>
-</section>
+    <div style="font-size:34px;margin:35px">
+      Oh.
+    </div>
 
+    <h2 class="pink">
+      It's your birthday. 😭❤️
+    </h2>
 
-<section>
-<div class="wrap">
-
-<div class="ey">JUST FOR YOU</div>
-
-<h2>You're Awesome</h2>
-
-<p id="awesomeText"></p>
-
-</div>
-</section>
-
-
-<section>
-<div class="wrap">
-
-<div class="ey">A LITTLE SOMETHING</div>
-
-<h2>Little Moments</h2>
-
-<p id="momentsIntro"></p>
-
-<div class="moments" id="moments"></div>
-
-</div>
-</section>
-
-
-<section>
-<div class="wrap">
-
-<div class="ey">A FEW MEMORIES</div>
-
-<h2>A Few Memories</h2>
-
-<p>Three little spaces for photos that mean something to you.</p>
-
-<div class="cards" id="photos"></div>
-
-</div>
-</section>
-
-
-<section>
-<div class="wrap">
-
-<div class="ey">JUST FOR YOU</div>
-
-<h2>Three Little Surprises</h2>
-
-<p>Open them one by one. ❤️</p>
-
-<div class="cards" id="boxes"></div>
-
-</div>
-</section>
-
-
-<section>
-<div class="wrap">
-
-<div class="ey">YOUR SECRET MESSAGE</div>
-
-<h2>Your Secret Message</h2>
-
-<div class="card">
-
-<div style="font-size:40px">💌</div>
-
-<p>You've received 1 secret message.</p>
-
-<button class="btn" onclick="openLetter()">OPEN LETTER 💌</button>
-
-<p id="secretLetter"
-style="display:none;white-space:pre-line"></p>
-
-</div>
-
-</div>
-</section>
-
-
-<section>
-
-<div class="wrap">
-
-<div class="ey">ONE LAST THING...</div>
-
-<h2>Keep smiling. ❤️</h2>
-
-<p id="finalMessage"></p>
-
-<h2 class="pink">
-Happy Birthday,
-<span id="finalName"></span>. 🎂❤️
-</h2>
-
-<button class="btn" onclick="playAgain()">PLAY AGAIN ↻</button>
-
-</div>
+  </div>
 
 </section>
 
+
+<!-- =========================
+     SLIDE 3
+========================= -->
+
+<section class="slide" id="slide2">
+
+  <div class="wrap">
+
+    <div class="ey">
+      TODAY IS YOURS
+    </div>
+
+    <h2>
+      Happy Birthday,<br>
+      <span class="pink" id="who"></span> 🎂
+    </h2>
+
+    <p id="birthdayMessage">
+      Happy Birthday! 🎂❤️
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 4
+========================= -->
+
+<section class="slide" id="slide3">
+
+  <div class="wrap">
+
+    <div class="ey">
+      JUST FOR YOU
+    </div>
+
+    <h2>
+      You're Awesome
+    </h2>
+
+    <p id="awesomeText">
+      You're an amazing person! 💖
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 5
+========================= -->
+
+<section class="slide" id="slide4">
+
+  <div class="wrap">
+
+    <div class="ey">
+      A LITTLE SOMETHING
+    </div>
+
+    <h2>
+      Little Moments
+    </h2>
+
+    <p id="momentsIntro">
+      A little surprise made especially for you. ❤️
+    </p>
+
+    <div class="moments" id="moments"></div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 6
+========================= -->
+
+<section class="slide" id="slide5">
+
+  <div class="wrap">
+
+    <div class="ey">
+      A FEW MEMORIES
+    </div>
+
+    <h2>
+      A Few Memories
+    </h2>
+
+    <p>
+      Three little spaces for photos that mean something to you.
+    </p>
+
+    <div class="cards" id="photos"></div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 7
+========================= -->
+
+<section class="slide" id="slide6">
+
+  <div class="wrap">
+
+    <div class="ey">
+      JUST FOR YOU
+    </div>
+
+    <h2>
+      Three Little Surprises
+    </h2>
+
+    <p>
+      Open them one by one. ❤️
+    </p>
+
+    <div class="cards" id="boxes"></div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 8
+========================= -->
+
+<section class="slide" id="slide7">
+
+  <div class="wrap">
+
+    <div class="ey">
+      YOUR SECRET MESSAGE
+    </div>
+
+    <h2>
+      Your Secret Message
+    </h2>
+
+    <div class="card">
+
+      <div style="font-size:40px">
+        💌
+      </div>
+
+      <p>
+        You've received 1 secret message.
+      </p>
+
+      <button class="btn" onclick="openLetter()">
+        OPEN LETTER 💌
+      </button>
+
+      <p
+        id="secretLetter"
+        style="display:none;white-space:pre-line"
+      ></p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     SLIDE 9
+========================= -->
+
+<section class="slide" id="slide8">
+
+  <div class="wrap">
+
+    <div class="ey">
+      ONE LAST THING...
+    </div>
+
+    <h2>
+      Keep smiling. ❤️
+    </h2>
+
+    <p id="finalMessage">
+      Happy Birthday! 🎉❤️
+    </p>
+
+    <h2 class="pink">
+      Happy Birthday,
+      <span id="finalName"></span>.
+      🎂❤️
+    </h2>
+
+    <button class="btn" onclick="playAgain()">
+      PLAY AGAIN ↻
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<div class="nav">
+
+  <button
+    id="prevBtn"
+    class="secondary hidden"
+    onclick="previousSlide()"
+  >
+    ← Previous
+  </button>
+
+  <button
+    id="nextBtn"
+    onclick="nextSlide()"
+  >
+    Next →
+  </button>
+
 </div>
 
+
+<!-- =========================
+     EDITOR
+========================= -->
 
 <div id="editor">
 
-<div style="max-width:760px;margin:auto">
+  <div class="editorInner">
 
-<h2>✏️ Edit Your Birthday Website</h2>
+    <h2>
+      ✏️ Edit Your Birthday Website
+    </h2>
 
+    <div class="editbox">
 
-<div class="editbox">
+      <h3>
+        Main Details
+      </h3>
 
-<h3>Main Details</h3>
+      <label>
+        Her Name
+      </label>
 
-<label>Her Name</label>
-<input id="editName">
+      <input id="editName">
 
-<label>My Name</label>
-<input id="editMyName">
+      <label>
+        My Name
+      </label>
 
-<label>Birthday Message</label>
-<textarea id="editBirthday"></textarea>
+      <input id="editMyName">
 
-<label>You're Awesome Text</label>
-<textarea id="editAwesome"></textarea>
+      <label>
+        Birthday Message
+      </label>
 
-<label>Little Moments Introduction</label>
-<textarea id="editIntro"></textarea>
+      <textarea id="editBirthday"></textarea>
 
-</div>
+      <label>
+        You're Awesome Text
+      </label>
 
+      <textarea id="editAwesome"></textarea>
 
-<div class="editbox">
+      <label>
+        Little Moments Introduction
+      </label>
 
-<h3>Little Moments — Text Only</h3>
+      <textarea id="editIntro"></textarea>
 
-<div id="momentEditor"></div>
-
-</div>
-
-
-<div class="editbox">
-
-<h3>3 Photo Slots</h3>
-
-<p>
-Photos are separate from Little Moments.
-Each photo is optional.
-</p>
-
-<div id="photoEditor"></div>
-
-</div>
+    </div>
 
 
-<div class="editbox">
+    <div class="editbox">
 
-<h3>3 Surprise Boxes</h3>
+      <h3>
+        Little Moments — Text Only
+      </h3>
 
-<div id="boxEditor"></div>
+      <div id="momentEditor"></div>
 
-</div>
-
-
-<div class="editbox">
-
-<h3>Secret Letter</h3>
-
-<textarea id="editLetter"></textarea>
-
-<label>Final Message</label>
-
-<textarea id="editFinal"></textarea>
-
-</div>
+    </div>
 
 
-<button class="save" onclick="saveChanges()">
-💾 SAVE CHANGES
-</button>
+    <div class="editbox">
 
-<br><br>
+      <h3>
+        3 Photo Slots
+      </h3>
 
-<button class="save" onclick="previewSite()">
-❤️ PREVIEW
-</button>
+      <p>
+        Photos are separate from Little Moments.
+        Each photo is optional.
+      </p>
 
-</div>
+      <div id="photoEditor"></div>
+
+    </div>
+
+
+    <div class="editbox">
+
+      <h3>
+        3 Surprise Boxes
+      </h3>
+
+      <div id="boxEditor"></div>
+
+    </div>
+
+
+    <div class="editbox">
+
+      <h3>
+        Secret Letter
+      </h3>
+
+      <textarea id="editLetter"></textarea>
+
+      <label>
+        Final Message
+      </label>
+
+      <textarea id="editFinal"></textarea>
+
+    </div>
+
+
+    <button
+      class="save"
+      onclick="saveChanges()"
+    >
+      💾 SAVE CHANGES
+    </button>
+
+    <button
+      class="closeEdit"
+      onclick="closeEditor()"
+    >
+      ← BACK TO WEBSITE
+    </button>
+
+  </div>
+
 </div>
 
 
 <script>
 
+/* =========================================================
+   DEFAULT DATA
+========================================================= */
+
 const defaultData = {
 
-name:"Your Name",
+  name: "Your Name",
 
-myName:"",
+  myName: "",
 
-birthday:"Happy Birthday! 🎂❤️",
+  birthday:
+    "Happy Birthday! 🎂❤️",
 
-awesome:"You're an amazing person! 💖",
+  awesome:
+    "You're an amazing person! 💖",
 
-intro:"A little surprise made especially for you. ❤️",
+  intro:
+    "A little surprise made especially for you. ❤️",
 
-letter:"You mean so much to me. I hope this little surprise makes you smile. 💕",
+  letter:
+    "You mean so much to me. I hope this little surprise makes you smile. 💕",
 
-final:"Happy Birthday! 🎉❤️",
+  final:
+    "Happy Birthday! 🎉❤️",
 
-moments:[
-{
-title:"A Little Memory",
-text:"Some moments are too special to forget. ❤️"
-},
-{
-title:"A Special Day",
-text:"Every memory with you is worth keeping. 💕"
-},
-{
-title:"Always Smile",
-text:"Keep smiling and keep being amazing. ✨"
-}
-],
+  moments: [
 
-photos:[
-"",
-"",
-""
-],
+    {
+      title: "A Beautiful Memory",
+      text: "Some moments are small, but they stay in our hearts forever. ❤️"
+    },
 
-boxes:[
-"Something sweet for you. 🍫❤️",
-"A little reminder that you're special. 💖",
-"One more reason to smile today. 🎁"
-]
+    {
+      title: "A Special Smile",
+      text: "Never forget how wonderful your smile can make everything feel. 💖"
+    },
+
+    {
+      title: "Always Remember",
+      text: "You are loved, appreciated, and truly special. ❤️"
+    }
+
+  ],
+
+  photos: [
+
+    {
+      image: "",
+      caption: "A special memory ❤️"
+    },
+
+    {
+      image: "",
+      caption: "Another beautiful moment 💕"
+    },
+
+    {
+      image: "",
+      caption: "One more memory 🎂"
+    }
+
+  ],
+
+  boxes: [
+
+    {
+      title: "Surprise 1 🎁",
+      text: "You deserve all the happiness in the world. ❤️"
+    },
+
+    {
+      title: "Surprise 2 🎁",
+      text: "May this year bring you beautiful memories and endless smiles. 💖"
+    },
+
+    {
+      title: "Surprise 3 🎁",
+      text: "And most importantly... never forget how special you are. ❤️"
+    }
+
+  ]
 
 };
 
 
-let data = JSON.parse(JSON.stringify(defaultData));
+/* =========================================================
+   DATA
+========================================================= */
 
+let data = JSON.parse(
+  JSON.stringify(defaultData)
+);
+
+let currentSlide = 0;
+
+
+/* =========================================================
+   LOAD SAVED DATA
+========================================================= */
+
+try {
+
+  const saved =
+    localStorage.getItem("birthdayWebsiteData");
+
+  if(saved){
+
+    data = {
+      ...data,
+      ...JSON.parse(saved)
+    };
+
+  }
+
+}catch(error){
+
+  console.log("Could not load saved data.");
+
+}
+
+
+/* =========================================================
+   SAVE DATA
+========================================================= */
+
+function saveToBrowser(){
+
+  try{
+
+    localStorage.setItem(
+      "birthdayWebsiteData",
+      JSON.stringify(data)
+    );
+
+  }catch(error){
+
+    console.log("Could not save data.");
+
+  }
+
+}
+
+
+/* =========================================================
+   UNLOCK
+========================================================= */
 
 function unlock(){
 
-const input=document.getElementById("nameInput");
+  const input =
+    document.getElementById("nameInput");
 
-const name=input ? input.value.trim() : "";
+  const error =
+    document.getElementById("error");
 
-if(!name){
+  const name =
+    input.value.trim();
 
-document.getElementById("error").textContent=
-"Please enter your name ❤️";
+  if(!name){
 
-return;
+    error.textContent =
+      "Please enter your name ❤️";
 
-}
+    return;
 
-data.name=name;
+  }
 
-document.getElementById("intro").style.display="none";
+  data.name = name;
 
-document.getElementById("suspense").style.display="flex";
+  saveToBrowser();
 
-}
+  error.textContent = "";
 
+  renderWebsite();
 
-function showMain(){
-
-document.getElementById("suspense").style.display="none";
-
-document.getElementById("main").style.display="block";
-
-renderSite();
-
-window.scrollTo(0,0);
+  goToSlide(1);
 
 }
 
 
-function renderSite(){
+/* =========================================================
+   SLIDE NAVIGATION
+========================================================= */
 
-document.getElementById("who").textContent=data.name;
+function goToSlide(number){
 
-document.getElementById("finalName").textContent=data.name;
+  const slides =
+    document.querySelectorAll(".slide");
 
-document.getElementById("birthdayMessage").textContent=data.birthday;
+  if(number < 0){
+    number = 0;
+  }
 
-document.getElementById("awesomeText").textContent=data.awesome;
+  if(number >= slides.length){
+    number = slides.length - 1;
+  }
 
-document.getElementById("momentsIntro").textContent=data.intro;
+  currentSlide = number;
 
-document.getElementById("finalMessage").textContent=data.final;
+  slides.forEach(
+    (slide,index)=>{
 
+      slide.classList.toggle(
+        "active",
+        index === currentSlide
+      );
 
-const moments=document.getElementById("moments");
+    }
+  );
 
-moments.innerHTML="";
-
-data.moments.forEach(function(item){
-
-const div=document.createElement("div");
-
-div.className="moment";
-
-div.innerHTML=
-"<b>"+escapeHtml(item.title)+"</b>"+
-"<span>"+escapeHtml(item.text)+"</span>";
-
-moments.appendChild(div);
-
-});
-
-
-const photos=document.getElementById("photos");
-
-photos.innerHTML="";
-
-data.photos.forEach(function(src,index){
-
-const div=document.createElement("div");
-
-div.className="photo";
-
-if(src){
-
-const img=document.createElement("img");
-
-img.src=src;
-
-img.alt="Memory "+(index+1);
-
-div.appendChild(img);
-
-}else{
-
-div.textContent="Photo "+(index+1);
-
-}
-
-photos.appendChild(div);
-
-});
-
-
-const boxes=document.getElementById("boxes");
-
-boxes.innerHTML="";
-
-data.boxes.forEach(function(text,index){
-
-const div=document.createElement("div");
-
-div.className="card";
-
-div.innerHTML=
-"<div style='font-size:40px'>🎁</div>"+
-"<p>Surprise "+(index+1)+"</p>"+
-"<button class='btn'>OPEN 🎁</button>"+
-"<p class='boxText' style='display:none'>"+
-escapeHtml(text)+
-"</p>";
-
-const button=div.querySelector("button");
-
-const message=div.querySelector(".boxText");
-
-button.onclick=function(){
-
-message.style.display="block";
-
-button.textContent="OPENED ❤️";
-
-};
-
-boxes.appendChild(div);
-
-});
+  updateNavigation();
 
 }
 
 
-function openLetter(){
+/* =========================================================
+   NEXT
+========================================================= */
 
-const letter=document.getElementById("secretLetter");
+function nextSlide(){
 
-letter.textContent=data.letter;
+  if(currentSlide < 8){
 
-letter.style.display="block";
+    goToSlide(
+      currentSlide + 1
+    );
 
-}
-
-
-function editSite(){
-
-const editor=document.getElementById("editor");
-
-const main=document.getElementById("main");
-
-const intro=document.getElementById("intro");
-
-const suspense=document.getElementById("suspense");
-
-if(editor.style.display==="block"){
-
-editor.style.display="none";
-
-return;
-
-}
-
-main.style.display="none";
-
-intro.style.display="none";
-
-suspense.style.display="none";
-
-editor.style.display="block";
-
-loadEditor();
-
-window.scrollTo(0,0);
+  }
 
 }
 
 
-function loadEditor(){
-
-document.getElementById("editName").value=data.name;
-
-document.getElementById("editMyName").value=data.myName;
-
-document.getElementById("editBirthday").value=data.birthday;
-
-document.getElementById("editAwesome").value=data.awesome;
-
-document.getElementById("editIntro").value=data.intro;
-
-document.getElementById("editLetter").value=data.letter;
-
-document.getElementById("editFinal").value=data.final;
-
-
-const momentEditor=document.getElementById("momentEditor");
-
-momentEditor.innerHTML="";
-
-data.moments.forEach(function(item,index){
-
-momentEditor.innerHTML+=
-"<label>Moment "+(index+1)+" Title</label>"+
-"<input id='momentTitle"+index+"' value='"+escapeAttr(item.title)+"'>"+
-"<label>Moment "+(index+1)+" Text</label>"+
-"<textarea id='momentText"+index+"'>"+
-escapeHtml(item.text)+
-"</textarea>";
-
-});
-
-
-const photoEditor=document.getElementById("photoEditor");
-
-photoEditor.innerHTML="";
-
-data.photos.forEach(function(src,index){
-
-photoEditor.innerHTML+=
-"<label>Photo "+(index+1)+" URL</label>"+
-"<input id='photo"+index+"' value='"+escapeAttr(src)+"' placeholder='Paste image URL'>";
-
-});
-
-
-const boxEditor=document.getElementById("boxEditor");
-
-boxEditor.innerHTML="";
-
-data.boxes.forEach(function(text,index){
-
-boxEditor.innerHTML+=
-"<label>Surprise "+(index+1)+"</label>"+
-"<textarea id='box"+index+"'>"+
-escapeHtml(text)+
-"</textarea>";
-
-});
-
-}
-
-
-function saveChanges(){
-
-data.name=document.getElementById("editName").value.trim() || "Your Name";
-
-data.myName=document.getElementById("editMyName").value.trim();
-
-data.birthday=document.getElementById("editBirthday").value;
-
-data.awesome=document.getElementById("editAwesome").value;
-
-data.intro=document.getElementById("editIntro").value;
-
-data.letter=document.getElementById("editLetter").value;
-
-data.final=document.getElementById("editFinal").value;
-
-
-data.moments.forEach(function(item,index){
-
-item.title=document.getElementById("momentTitle"+index).value;
-
-item.text=document.getElementById("momentText"+index).value;
-
-});
-
-
-data.photos.forEach(function(src,index){
-
-data.photos[index]=document.getElementById("photo"+index).value.trim();
-
-});
-
-
-data.boxes.forEach(function(text,index){
-
-data.boxes[index]=document.getElementById("box"+index).value;
-
-});
-
-
-alert("Changes saved ❤️");
-
-}
-
-
-function previewSite(){
-
-document.getElementById("editor").style.display="none";
-
-document.getElementById("intro").style.display="none";
-
-document.getElementById("suspense").style.display="none";
-
-document.getElementById("main").style.display="block";
-
-renderSite();
-
-window.scrollTo(0,0);
-
-}
-
-
-function playAgain(){
-
-document.getElementById("main").style.display="none";
-
-document.getElementById("editor").style.display="none";
-
-document.getElementById("suspense").style.display="none";
-
-document.getElementById("intro").style.display="flex";
-
-document.getElementById("nameInput").value="";
-
-document.getElementById("error").textContent="";
-
-window.scrollTo(0,0);
-
-}
-
-
-function escapeHtml(text){
-
-return String(text)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
-}
-
-
-function escapeAttr(text){
-
-return escapeHtml(text);
-
-}
-
-
-window.unlock=unlock;
-window.showMain=showMain;
-window.editSite=editSite;
-window.saveChanges=saveChanges;
-window.previewSite=previewSite;
-window.openLetter=openLetter;
-window.playAgain=playAgain;
-
-</script>
-
-</body>
-</html>
+/* =========================================================
+   PREVIOUS
+================================================
